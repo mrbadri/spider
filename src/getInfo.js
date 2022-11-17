@@ -1,8 +1,9 @@
 const { By, until } = require('selenium-webdriver');
 const extractEmails = require('./utils/extractEmail');
+const switchNextTab = require('./utils/switchNextTab');
 
-async function getInfo(driver, getProfileLink, windowNumber, newCount) {
-  console.log('LOADING ...');
+async function getInfo(driver, getProfileLink, newCount = 0) {
+  console.log('Get Info is LOADING ...');
   //   await until.elementLocated(By.css('.bio-text'));
   // https://dribbble.com/mike-bruner/about
 
@@ -15,8 +16,7 @@ async function getInfo(driver, getProfileLink, windowNumber, newCount) {
   console.log('----- ----- ------- ----------- ------- ----- -----');
 
   if (currentUrl === 'https://dribbble.com/') {
-    console.log('---- IF IS RUNNING ----');
-    console.log('Function:', getProfileLink);
+    console.log('---- Back to Home Page ----');
     await getProfileLink(driver, newCount);
     return -1;
   }
@@ -37,10 +37,9 @@ async function getInfo(driver, getProfileLink, windowNumber, newCount) {
   console.log('--- --- ---');
 
   await driver.close();
-  const originalWindow = await driver.getAllWindowHandles();
-  await driver.switchTo().window(originalWindow[windowNumber]);
+  await switchNextTab(driver);
 
-  await getInfo(driver, getProfileLink, windowNumber - 1, newCount);
+  await getInfo(driver, getProfileLink, newCount);
 }
 
 module.exports = getInfo;

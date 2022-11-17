@@ -1,34 +1,37 @@
-const { By } = require('selenium-webdriver');
-const getInfo = require('./getInfo');
+const checkNewUsers = require('./utils/checkNewUsers');
+const getTotalUsers = require('./utils/getTotalUsers');
 const scrollDown = require('./utils/scrollDown');
+const getInfo = require('./getInfo');
+const switchNextTab = require('./utils/switchNextTab');
 
 /**
  * @function getProfileLink get link profile from landing dribble and open in new tab
  * @param {Object} driver
  */
-async function getProfileLink(driver, count = 0) {
-  const profileLinks = await driver.findElements(By.css('.user-information a.hoverable'));
+async function getProfileLink(driver, count = 24) {
+  console.log('Get Profile Link is LOADING ...');
 
   console.log('--- --- --- Get Profile Link --- --- ---');
-  console.log('count first user:', count);
-  console.log('total username:', profileLinks.length);
 
-  if (count !== 0) {
+  // if (count !== 0) {
+  if (true) {
     await scrollDown(driver);
+    await checkNewUsers(driver, count);
   }
 
-  for (let i = count; i < profileLinks.length; i++) {
-    const link = profileLinks[i];
+  const $userLinks = await getTotalUsers(driver);
+  const countUsers = $userLinks.length;
+
+  for (let i = count; i < countUsers; i++) {
+    const link = $userLinks[i];
     const href = await link.getAttribute('href');
-    // open info users in new tabs
+    // open info user links in new tabs
     driver.executeScript(`window.open('${href}/about', '${i}');`);
   }
 
-  const originalWindow = await driver.getAllWindowHandles();
+  await switchNextTab(driver);
 
-  await driver.switchTo().window(originalWindow[profileLinks.length - 1]);
-
-  await getInfo(driver, getProfileLink, profileLinks.length - 1, profileLinks.length);
+  await getInfo(driver, getProfileLink, countUsers);
 }
 
 module.exports = getProfileLink;

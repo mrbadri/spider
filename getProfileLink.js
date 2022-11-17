@@ -1,5 +1,6 @@
 const { By } = require('selenium-webdriver');
 const getInfo = require('./getInfo');
+const scrollDown = require('./scrollDown');
 
 /**
  * @function getProfileLink get link profile from landing dribble and open in new tab
@@ -7,6 +8,14 @@ const getInfo = require('./getInfo');
  */
 async function getProfileLink(driver, count = 0) {
   const profileLinks = await driver.findElements(By.css('.user-information a.hoverable'));
+
+  console.log('--- --- --- Get Profile Link --- --- ---');
+  console.log('count first user:', count);
+  console.log('total username:', profileLinks.length);
+
+  if (count !== 0) {
+    scrollDown(driver);
+  }
 
   for (let i = count; i < profileLinks.length; i++) {
     const link = profileLinks[i];
@@ -19,7 +28,7 @@ async function getProfileLink(driver, count = 0) {
 
   await driver.switchTo().window(originalWindow[profileLinks.length - 1]);
 
-  await getInfo(driver, profileLinks.length - 1);
+  await getInfo(driver, profileLinks.length - 1, profileLinks.length);
 }
 
 module.exports = getProfileLink;

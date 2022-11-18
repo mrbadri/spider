@@ -8,7 +8,7 @@ const switchNextTab = require('./utils/switchNextTab');
  * @function getProfileLink get link profile from landing dribble and open in new tab
  * @param {Object} driver
  */
-async function getProfileLink(driver, count = 24) {
+async function getProfileLink(driver, count = 0) {
   console.log('Get Profile Link is LOADING ...');
 
   console.log('--- --- --- Get Profile Link --- --- ---');

@@ -1,6 +1,6 @@
 const { By, until } = require('selenium-webdriver');
-const extractEmails = require('./utils/extractEmail');
-const switchNextTab = require('./utils/switchNextTab');
+const extractEmails = require('../extractEmail');
+const switchNextTab = require('../switchNextTab');
 
 async function getInfo(driver, getProfileLink, newCount = 0) {
   console.log('Get Info is LOADING ...');

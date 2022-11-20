@@ -1,8 +1,8 @@
-const checkNewUsers = require('./utils/checkNewUsers');
-const getTotalUsers = require('./utils/getTotalUsers');
-const scrollDown = require('./utils/scrollDown');
-const getInfo = require('./getInfo');
-const switchNextTab = require('./utils/switchNextTab');
+const checkNewUsers = require('../checkNewUsers');
+const getTotalUsers = require('../getTotalUsers');
+const scrollDown = require('../scrollDown');
+const getInfo = require('../get/getInfo');
+const switchNextTab = require('../switchNextTab');
 
 /**
  * @function getProfileLink get link profile from landing dribble and open in new tab
@@ -18,7 +18,6 @@ async function getProfileLink(driver, count = 0) {
     await scrollDown(driver);
     await checkNewUsers(driver, count);
   }
-
   const $userLinks = await getTotalUsers(driver);
   const countUsers = $userLinks.length;
 

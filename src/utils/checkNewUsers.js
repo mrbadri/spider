@@ -1,4 +1,5 @@
 const getTotalUsers = require('./getTotalUsers');
+const scrollDown = require('./scrollDown');
 const timeout = require('./timeout');
 
 async function checkNewUsers(driver, countLastUserSaved) {
@@ -19,6 +20,7 @@ async function checkNewUsers(driver, countLastUserSaved) {
   } else {
     console.log('--- Before timeout ---');
     await timeout(5000);
+    await scrollDown(driver);
     await checkNewUsers(driver, countLastUserSaved);
     console.log('--- After timeout ---');
   }

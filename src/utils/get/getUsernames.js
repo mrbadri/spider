@@ -6,9 +6,9 @@ const switchNextTab = require('../switchNextTab');
 const { By } = require('selenium-webdriver');
 const saveUsername = require('../save/saveUsername');
 
-async function getUsernames(driver, count = 0) {
+async function getUsernames(driver, count = 0, url) {
   console.log('--- --- --- Get Usernames --- --- ---');
-
+  await driver.get(url);
   await checkNewUsers(driver, count);
 
   const currentUrl = await driver.getCurrentUrl();

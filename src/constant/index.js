@@ -1,5 +1,6 @@
 const CONSTANT = {
-  URL: 'https://dribbble.com/marketplace/graphics',
+  BASEURL: 'https://dribbble.com/marketplace/',
+  CATEGORIES: ['graphics', '3d', 'templates', 'themes', 'fonts', 'add-ons'],
 };
 
 module.exports = CONSTANT;

@@ -32,6 +32,8 @@ async function saveUsername(username, category) {
     console.log(`--- username: '${username}' was exist!`);
     console.log('--- -- -- -- -- -- -- -- -- -- --- ');
 
+    Spider.up
+
     return false;
   }
 }

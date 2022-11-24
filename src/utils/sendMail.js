@@ -6,12 +6,12 @@ function sendMail({ text = '', subject = '', error = '' } = {}) {
   console.log('---- ---- Send Mail ---- ----');
   console.log('---- ---- --------- ---- ----');
 
-  console.log(process.env.to_mail);
+  console.log(process.env.TO_MAIL);
   const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
-      user: process.env.from_mail,
-      pass: process.env.pass_mail,
+      user: process.env.FROM_MAIL,
+      pass: process.env.PASS_MAIL,
     },
     tls: {
       rejectUnauthorized: false,
@@ -19,8 +19,8 @@ function sendMail({ text = '', subject = '', error = '' } = {}) {
   });
 
   const mailOPtions = {
-    from: process.env.from_mail,
-    to: process.env.to_mail,
+    from: process.env.FROM_MAIL,
+    to: process.env.TO_MAIL,
     subject: subject || 'We Have Error in spider!',
     text: text || `Please Check the Spider Server. <br/> ERROR: ${error}`,
   };

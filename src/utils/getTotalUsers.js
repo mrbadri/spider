@@ -5,12 +5,12 @@ async function getTotalUsers(driver) {
   let address = '';
 
   switch (currentUrl) {
-    case 'https://dribbble.com/marketplace/graphics':
-      address = '.good-details a.good-title-text.font-body-small';
+    case 'https://dribbble.com/':
+      address = '.user-information a.hoverable';
       break;
 
     default:
-      address = '.user-information a.hoverable';
+      address = '.good-details a.good-title-text.font-body-small';
       break;
   }
   const users = await driver.findElements(By.css(address));

@@ -6,9 +6,8 @@ const switchNextTab = require('../switchNextTab');
 const { By } = require('selenium-webdriver');
 const saveUsername = require('../save/saveUsername');
 
-async function getUsernames(driver, count = 0, url) {
+async function getUsernames({ driver, count = 0, url }) {
   console.log('--- --- --- Get Usernames --- --- ---');
-  await driver.get(url);
   await checkNewUsers(driver, count);
 
   const currentUrl = await driver.getCurrentUrl();
@@ -20,13 +19,13 @@ async function getUsernames(driver, count = 0, url) {
     const link = $userLinks[i];
     const href = await link.getAttribute('href');
     const username = href.split('/')[3];
+    const currentUrl = await driver.getCurrentUrl();
+    const source = currentUrl.split('/')[2];
 
-    await saveUsername(username, category);
-
-    console.log(username, category);
+    await saveUsername({ username, category, source });
   }
 
-  await getUsernames(driver, countUsers);
+  await getUsernames({ driver, count: countUsers, url });
 }
 
 module.exports = getUsernames;

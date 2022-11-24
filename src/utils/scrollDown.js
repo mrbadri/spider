@@ -10,7 +10,7 @@ async function scrollDown(driver) {
 
   await driver
     .actions()
-    .scroll(0, 0, 0, footerH + wrapH)
+    .scroll(0, 0, 0, wrapH)
     .perform();
 }
 

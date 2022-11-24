@@ -1,7 +1,7 @@
 const { BASEURL, CATEGORIES } = require('./constant');
 
 config = () => {
-  const category = CATEGORIES[0];
+  const category = CATEGORIES[2];
 
   return {
     url: BASEURL + category,

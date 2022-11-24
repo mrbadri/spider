@@ -7,16 +7,20 @@ const spiderSchema = new Schema(
       type: String,
       required: true,
     },
-    category: String,
+    categories: {
+      type: [String],
+      default: [],
+    },
+    haveInfo: {
+      type: Boolean,
+      default: false,
+    },
+    source: String,
     email: String,
     bio: String,
     instagram: String,
     website: String,
     profile: String,
-    getInfo: {
-      type: Boolean,
-      default: false,
-    },
   },
   { timestamps: true }
 );

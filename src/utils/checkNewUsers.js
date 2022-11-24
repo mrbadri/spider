@@ -1,6 +1,7 @@
 const Spider = require('../models');
 const getTotalUsers = require('./getTotalUsers');
 const scrollDown = require('./scrollDown');
+const showCounts = require('./show/counts');
 const timeout = require('./timeout');
 
 async function checkNewUsers(driver, countLastUserSaved) {
@@ -13,14 +14,13 @@ async function checkNewUsers(driver, countLastUserSaved) {
 
   console.log('---- Last count User Checked', countLastUserSaved);
   console.log('---- Current count Users', countUsers);
-  const users = await Spider.find().select('username').select('category');
-  console.log('Unit User in DB:', users.length);
+  await showCounts();
 
   if (countLastUserSaved < countUsers) {
     console.log('-- -------- --');
     console.log('-- continue --');
     console.log('-- -------- --');
-  } else {;
+  } else {
     console.log('--- Before timeout ---');
     await timeout(5000);
     await scrollDown(driver);

@@ -6,7 +6,9 @@
   "scripts": {
     "start": "node src/index.js",
     "get-username": "TASK=getUsername  node src/index.js",
-    "get-info": "TASK=getInfo node src/index.js"
+    "get-info": "TASK=getInfo node src/index.js",
+    "show-users": "TASK=showUsers node src/index.js",
+    "clear-users": "TASK=clearUsers node src/index.js"
   },
   "author": "",
   "license": "ISC",

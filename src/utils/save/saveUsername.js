@@ -1,15 +1,15 @@
 const Spider = require('../../models');
 
-async function saveUsername(username, category) {
+async function saveUsername({ username, category, source }) {
   console.log(`--- --- --- --- --- --- --- --- - --- ---`);
   console.log(`--- --- Loading for Save username --- ---`);
   console.log(`--- --- --- --- --- --- --- --- - --- ---`);
 
-  const haveThisUser = await Spider.find({ username });
+  const user = await Spider.findOne({ username });
 
-  if (haveThisUser.length === 0) {
+  if (!user) {
     try {
-      await Spider.create({ username, category });
+      await Spider.create({ username, categories: [category], source });
       console.log('--- -- -- -- -- -- -- -- -- -- --- ');
       console.log(`--- username: '${username}' saved.`);
       console.log('--- -- -- -- -- -- -- -- -- -- --- ');
@@ -28,11 +28,30 @@ async function saveUsername(username, category) {
       return false;
     }
   } else {
+    haveNewCategory = !user.categories.includes(category);
+
+    // if have new category update db
+    if (haveNewCategory) {
+      const categories = new Set(user?.categories || []);
+      categories.add(category);
+
+      const userUpdated = await Spider.findOneAndUpdate(
+        { username },
+        { categories: [...categories] },
+        {
+          new: true,
+        }
+      );
+
+      console.log('---------------------------------------------');
+      console.log('--------------- USER UPDATED ----------------');
+      console.log('---------------------------------------------');
+      console.log('user updated:', userUpdated);
+    }
+
     console.log('--- -- -- -- -- -- -- -- -- -- --- ');
     console.log(`--- username: '${username}' was exist!`);
     console.log('--- -- -- -- -- -- -- -- -- -- --- ');
-
-    Spider.up
 
     return false;
   }

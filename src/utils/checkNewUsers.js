@@ -12,8 +12,8 @@ async function checkNewUsers(driver, countLastUserSaved) {
   const $userLinks = await getTotalUsers(driver);
   const countUsers = $userLinks.length;
 
-  console.log('---- Last count User Checked', countLastUserSaved);
-  console.log('---- Current count Users', countUsers);
+  console.log('---- Last count Posts Checked', countLastUserSaved);
+  console.log('---- Current count Posts', countUsers);
   await showCounts();
 
   if (countLastUserSaved < countUsers) {

@@ -10,7 +10,15 @@ const getAboutLink = require('./getAboutLink');
 async function getInfo(driver) {
   console.log('Get Info is LOADING ...');
 
-  const user = await Spider.findOne({ haveInfo: false }).limit(2);
+  const users = await Spider.find({ haveInfo: false }).limit(20);
+  let user = users[0];
+
+
+  // when you open multi terminal with ( yarn run get-info ) this condition help you don't get same user info
+  if (users.length > 10) {
+    user = users[Math.ceil(Math.random() * 10)];
+    console.log(Math.ceil(Math.random() * 10));
+  }
 
   if (user) {
     const { username } = user;
@@ -45,7 +53,6 @@ async function getInfo(driver) {
     console.log('Email: ', email);
     console.log('--- --- --- --- --- --- --- --- ---');
     await showCounts();
-
   } else {
     console.log('-------------------------');
     console.log('Waiting For Get New Users');

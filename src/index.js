@@ -1,6 +1,6 @@
 const { Builder, Browser } = require('selenium-webdriver');
 const getUsernames = require('./utils/get/getUsernames');
-const sendMail = require('./utils/sendMail');
+const sendMail = require('../sendMail');
 const mongoose = require('mongoose');
 const config = require('./config');
 const showUsers = require('./utils/show/users');

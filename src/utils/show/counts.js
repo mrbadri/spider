@@ -8,9 +8,9 @@ const showCounts = async () => {
   console.log('Users do not Have Info in DB:', users.length - usersHaveInfo.length);
 
   return {
-    users: users.length,
-    usersHaveInfo: usersHaveInfo.length,
-    usersDontHaveInfo: users.length - usersHaveInfo.length,
+    countUsers: users.length,
+    countUsersHaveInfo: usersHaveInfo.length,
+    countUsersDontHaveInfo: users.length - usersHaveInfo.length
   };
 };
 

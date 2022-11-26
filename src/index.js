@@ -1,10 +1,10 @@
 const { Builder, Browser } = require('selenium-webdriver');
 const getUsernames = require('./utils/get/getUsernames');
-const sendMail = require('../sendMail');
-const mongoose = require('mongoose');
-const config = require('./config');
 const showUsers = require('./utils/show/users');
 const getInfo = require('./utils/get/getInfo');
+const sendMail = require('./utils/sendMail');
+const mongoose = require('mongoose');
+const config = require('./config');
 const Spider = require('./models');
 require('dotenv').config();
 
@@ -29,7 +29,7 @@ mongoose
   .then(() => {
     console.log('connected to db!');
   })
-  .catch(err => {
+  .catch((err) => {
     console.log(err);
   });
 
@@ -41,7 +41,7 @@ mongoose
 
   const driver =
     (task === 'getUsername' || task === 'getInfo') &&
-    (await new Builder().forBrowser(Browser.CHROME).build());
+    (await new Builder().forBrowser(Browser.CHROME).setChromeOptions('--headless').build());
 
   try {
     switch (task) {
@@ -51,7 +51,7 @@ mongoose
 
       case 'getUsername':
         await driver.get(url);
-        await getUsernames({ driver, count: 0, url });
+        await getUsernames({ driver, count: 0 });
         break;
 
       case 'showUsers':
@@ -65,8 +65,13 @@ mongoose
         console.log('----- -- -- - -----');
         break;
 
+      case 'sendMail':
+        await sendMail();
+        break;
+
       default:
-        await getUsernames({ driver, count: 0, url });
+        await driver.get(url);
+        await getUsernames({ driver, count: 0 });
         break;
     }
   } catch (error) {

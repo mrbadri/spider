@@ -1,5 +1,5 @@
 const hbs = require('nodemailer-express-handlebars');
-const showCounts = require('./src/utils/show/counts');
+const showCounts = require('./show/counts');
 const nodemailer = require('nodemailer');
 const path = require('path');
 
@@ -8,28 +8,28 @@ async function sendMail({ text = '', subject = '', error = '' } = {}) {
   console.log('---- ---- Send Mail ---- ----');
   console.log('---- ---- --------- ---- ----');
 
-  const { users, usersHaveInfo, usersDontHaveInfo } = await showCounts();
+  const { countUsers, countUsersHaveInfo, countUsersDontHaveInfo } = await showCounts();
 
   console.log(process.env.TO_MAIL);
   const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
       user: process.env.FROM_MAIL,
-      pass: process.env.PASS_MAIL,
+      pass: process.env.PASS_MAIL
     },
     tls: {
-      rejectUnauthorized: false,
-    },
+      rejectUnauthorized: false
+    }
   });
 
   const handlebarsOptions = {
     viewEngine: {
       extName: '.handlebars',
-      partialsDir: './views',
-      defaultLayout: false,
+      partialsDir: './src/views',
+      defaultLayout: false
     },
-    viewPath: './views',
-    extName: '.handlebars',
+    viewPath: './src/views',
+    extName: '.handlebars'
   };
 
   transporter.use('compile', hbs(handlebarsOptions));
@@ -37,11 +37,9 @@ async function sendMail({ text = '', subject = '', error = '' } = {}) {
   const mailOPtions = {
     from: process.env.FROM_MAIL,
     to: process.env.TO_MAIL,
-    subject: subject || 'We Have Error in spider!',
+    subject: subject || 'Spider Notification',
     template: 'email',
-    context: {
-      full_name: 'test context',
-    },
+    context: { countUsers, countUsersHaveInfo, countUsersDontHaveInfo, error }
   };
 
   transporter.sendMail(mailOPtions, function (err, success) {

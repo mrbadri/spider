@@ -3,14 +3,13 @@ const showCounts = require('./show/counts');
 const nodemailer = require('nodemailer');
 const path = require('path');
 
-async function sendMail({ text = '', subject = '', error = '' } = {}) {
+async function sendMail({ title = '', content = '', subject = '', error = '', showCounter = true } = {}) {
   console.log('---- ---- --------- ---- ----');
   console.log('---- ---- Send Mail ---- ----');
   console.log('---- ---- --------- ---- ----');
 
   const { countUsers, countUsersHaveInfo, countUsersDontHaveInfo } = await showCounts();
 
-  console.log(process.env.TO_MAIL);
   const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
@@ -39,7 +38,7 @@ async function sendMail({ text = '', subject = '', error = '' } = {}) {
     to: process.env.TO_MAIL,
     subject: subject || 'Spider Notification',
     template: 'email',
-    context: { countUsers, countUsersHaveInfo, countUsersDontHaveInfo, error }
+    context: { countUsers, countUsersHaveInfo, countUsersDontHaveInfo, error, content, title, showCounter }
   };
 
   transporter.sendMail(mailOPtions, function (err, success) {

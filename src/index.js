@@ -66,7 +66,9 @@ mongoose
         break;
 
       case 'sendMail':
-        await sendMail();
+        const [arg1, arg2, title = '', content = ''] = process.argv;
+
+        await sendMail({ title, content });
         break;
 
       default:

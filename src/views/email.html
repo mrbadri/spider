@@ -50,12 +50,16 @@
         margin: 50px auto;
         width: 90%;
         overflow: hidden;
+        text-align: justify;
       }
       .orange {
         color: #ffcb77;
       }
       .red {
         color: #fe6d73;
+      }
+      .blue {
+        color: #2ddac8;
       }
       .content {
         color: #d7d2c5;
@@ -113,6 +117,9 @@
       <div class="over-flow">
         <div class="container">
           <h1>SPIDER</h1>
+
+          <!-- counter -->
+          {{#if showCounter}}
           <table class="card">
             <tr>
               <td>
@@ -139,8 +146,26 @@
               </td>
             </tr>
           </table>
+          {{/if}}
 
-          {% if error %}
+          <!-- content -->
+          {{#if content}}
+          <table class="card">
+            <tbody>
+              <tr>
+                <td><h2 class="blue">{{title}}</h2></td>
+              </tr>
+              <tr>
+                <td>
+                  <p class="content">{{content}}</p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          {{/if}}
+
+          <!-- Error -->
+          {{#if error}}
           <table class="card">
             <tbody>
               <tr>
@@ -153,7 +178,7 @@
               </tr>
             </tbody>
           </table>
-          {% endif %}
+          {{/if}}
         </div>
       </div>
     </div>

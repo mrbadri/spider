@@ -17,12 +17,12 @@
       text-align: justify; } .over-flow { background-color: rgba(0, 0, 0, 0.3); height: 100%; width: 100%; min-height: 100%; max-width:
       100%; max-height: 100%; overflow: hidden; } .bg { background-size: contain !important; background:
       url(https://s6.uupload.ir/files/spider-removebg-preview_ph4v.png); background-position: top center !important; background-repeat:
-      no-repeat; height: 100%; width: 100%; } .container { margin: 50px auto; width: 90%; overflow: hidden; } .orange { color: #ffcb77; }
-      .red { color: #fe6d73; } .content { color: #d7d2c5; white-space: normal !important; } .card { width: 100%; background-color: rgba(0,
-      0, 0, 0.15); padding: 16px 28px; border-radius: 4px; margin-bottom: 32px; } .left { text-align: left; } .right { text-align: right; }
-      .w-100 { width: 100%; } .h-100 { height: 100%; } @media only screen and (max-width: 600px) { p, ul li, ol li, a { line-height: 150%
-      !important; } h1, h2, h3, h1 a, h2 a, h3 a { line-height: 120%; } h1 { font-size: 40px !important; text-align: center; } h2 {
-      font-size: 24px !important; } h3 { font-size: 18px !important; } }
+      no-repeat; height: 100%; width: 100%; } .container { margin: 50px auto; width: 90%; overflow: hidden; text-align: justify; } .orange {
+      color: #ffcb77; } .red { color: #fe6d73; } .blue { color: #2ddac8; } .content { color: #d7d2c5; white-space: normal !important; }
+      .card { width: 100%; background-color: rgba(0, 0, 0, 0.15); padding: 16px 28px; border-radius: 4px; margin-bottom: 32px; } .left {
+      text-align: left; } .right { text-align: right; } .w-100 { width: 100%; } .h-100 { height: 100%; } @media only screen and (max-width:
+      600px) { p, ul li, ol li, a { line-height: 150% !important; } h1, h2, h3, h1 a, h2 a, h3 a { line-height: 120%; } h1 { font-size: 40px
+      !important; text-align: center; } h2 { font-size: 24px !important; } h3 { font-size: 18px !important; } }
     </style>
   </head>
   <body>
@@ -30,47 +30,68 @@
       <div class='over-flow'>
         <div class='container'>
           <h1>SPIDER</h1>
-          <table class='card'>
-            <tr>
-              <td>
-                <h3>All Users:</h3>
-              </td>
-              <td>
-                <h2 class='orange right'>{{countUsers}}</h2>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <h3>Completed:</h3>
-              </td>
-              <td>
-                <h2 class='orange right'>{{countUsersHaveInfo}}</h2>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <h3>Remain:</h3>
-              </td>
-              <td>
-                <h2 class='orange right'>{{countUsersDontHaveInfo}}</h2>
-              </td>
-            </tr>
-          </table>
 
-          {% if error %}
-          <table class='card'>
-            <tbody>
+          <!-- counter -->
+          {{#if showCounter}}
+            <table class='card'>
               <tr>
-                <td><h2 class='red'>Error</h2></td>
+                <td>
+                  <h3>All Users:</h3>
+                </td>
+                <td>
+                  <h2 class='orange right'>{{countUsers}}</h2>
+                </td>
               </tr>
               <tr>
                 <td>
-                  <p class='content'>{{error}}</p>
+                  <h3>Completed:</h3>
+                </td>
+                <td>
+                  <h2 class='orange right'>{{countUsersHaveInfo}}</h2>
                 </td>
               </tr>
-            </tbody>
-          </table>
-          {% endif %}
+              <tr>
+                <td>
+                  <h3>Remain:</h3>
+                </td>
+                <td>
+                  <h2 class='orange right'>{{countUsersDontHaveInfo}}</h2>
+                </td>
+              </tr>
+            </table>
+          {{/if}}
+
+          <!-- content -->
+          {{#if content}}
+            <table class='card'>
+              <tbody>
+                <tr>
+                  <td><h2 class='blue'>{{title}}</h2></td>
+                </tr>
+                <tr>
+                  <td>
+                    <p class='content'>{{content}}</p>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          {{/if}}
+
+          <!-- Error -->
+          {{#if error}}
+            <table class='card'>
+              <tbody>
+                <tr>
+                  <td><h2 class='red'>Error</h2></td>
+                </tr>
+                <tr>
+                  <td>
+                    <p class='content'>{{error}}</p>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          {{/if}}
         </div>
       </div>
     </div>

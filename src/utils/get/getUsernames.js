@@ -1,12 +1,8 @@
+const saveUsername = require('../save/saveUsername');
 const checkNewUsers = require('../checkNewUsers');
 const getTotalUsers = require('../getTotalUsers');
-const scrollDown = require('../scrollDown');
-const getInfo = require('../get/getInfo');
-const switchNextTab = require('../switchNextTab');
-const { By } = require('selenium-webdriver');
-const saveUsername = require('../save/saveUsername');
 
-async function getUsernames({ driver, count = 0, url }) {
+async function getUsernames({ driver, count = 0 }) {
   console.log('--- --- --- Get Usernames --- --- ---');
   await checkNewUsers(driver, count);
 
@@ -25,7 +21,7 @@ async function getUsernames({ driver, count = 0, url }) {
     await saveUsername({ username, category, source });
   }
 
-  await getUsernames({ driver, count: countUsers, url });
+  await getUsernames({ driver, count: countUsers });
 }
 
 module.exports = getUsernames;

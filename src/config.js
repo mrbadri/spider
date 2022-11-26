@@ -1,7 +1,8 @@
 const { BASEURL, CATEGORIES } = require('./constant');
 
 config = () => {
-  const category = CATEGORIES[2];
+  const numberCategory = process.argv[2] || 0;
+  const category = CATEGORIES[Number(numberCategory)];
 
   return {
     url: BASEURL + category,

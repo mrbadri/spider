@@ -3,5 +3,6 @@
         "chromedriver",
         "Dont",
         "selenuim"
-    ]
+    ],
+    "dotenv.enableAutocloaking": false
 }

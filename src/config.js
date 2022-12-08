@@ -7,6 +7,8 @@ config = () => {
   return {
     url: BASEURL + category,
     dbUrl: process.env.DB_URL,
+    headless: process.env.HEADLESS === 'true',
+    task: process.env.TASK
   };
 };
 

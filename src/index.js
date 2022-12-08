@@ -1,5 +1,7 @@
+const { WINDOW_WIDTH, WINDOW_HEIGHT } = require('./constant');
 const { Builder, Browser } = require('selenium-webdriver');
 const getUsernames = require('./utils/get/getUsernames');
+const chrome = require('selenium-webdriver/chrome');
 const showUsers = require('./utils/show/users');
 const getInfo = require('./utils/get/getInfo');
 const sendMail = require('./utils/sendMail');
@@ -8,20 +10,19 @@ const config = require('./config');
 const Spider = require('./models');
 require('dotenv').config();
 
+// get config
+const { dbUrl, url, headless ,task } = config();
+
 console.log('-- -- -- --- ----- --- -- -- --');
 console.log('-- -- -- --- ----- --- -- -- --');
 console.log('-- -- -- --- START --- -- -- --');
 console.log('-- -- -- --- ----- --- -- -- --');
 console.log('-- -- -- --- ----- --- -- -- --');
 
-const task = process.env.TASK;
-
 console.log('--- -- --- ----- --- --- ---- -');
 console.log(`--- -- MY TASK IS ${task}`);
 console.log('--- -- --- ----- --- --- ---- -');
 
-// get config
-const { dbUrl, url } = config();
 
 // connection with DB
 mongoose
@@ -39,10 +40,25 @@ mongoose
 (async function spider() {
   console.log('Spider is LOADING ...');
 
-  const driver =
-    (task === 'getUsername' || task === 'getInfo') &&
-    (await new Builder().forBrowser(Browser.CHROME).setChromeOptions('--headless').build());
+  // Handle Create Driver
+  const screen = {
+    width: WINDOW_WIDTH,
+    height: WINDOW_HEIGHT
+  };
+  let driver = {};
 
+  switch (task) {
+    case 'getUsername':
+    case 'getInfo':
+      if (headless) {
+        driver = await new Builder().forBrowser(Browser.CHROME).setChromeOptions(new chrome.Options().headless()).build();
+      } else {
+        driver = await new Builder().forBrowser(Browser.CHROME).setChromeOptions(new chrome.Options().windowSize(screen)).build();
+      }
+      break;
+  }
+
+  // Run Tasks
   try {
     switch (task) {
       case 'getInfo':

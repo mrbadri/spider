@@ -8,6 +8,7 @@ source ./scripts/sendMail.bash
 
 echo
 echo -e "Hi, I'm $PURPLE$BOLD"Spider"$NONE"
+suggestions
 
 while true; do
     read -p "$(echo -e Please Enter My $CYAN$BOLD"Task"$NONE:) " task
@@ -15,13 +16,16 @@ while true; do
     case $task in
         get-username ) getUsername exit;;
         
-        get-info) TASK=getInfo node src/index.js ;;
+        get-info) TASK=getInfo node src/index.js exit;;
         
-        send-mail) sendMail ;;
+        send-mail) sendMail exit;;
         
-        show-users ) TASK=showUsers node src/index.js ;;
+        show-users ) TASK=showUsers node src/index.js exit;;
+
+        show-counts ) TASK=showCounts node src/index.js exit;;
         
-        clear-users ) clearUsers ;;
+        clear-users ) clearUsers exit;;
+
         
         
         # if dont enter correct answer

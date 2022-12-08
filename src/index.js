@@ -8,6 +8,7 @@ const sendMail = require('./utils/sendMail');
 const mongoose = require('mongoose');
 const config = require('./config');
 const Spider = require('./models');
+const showCounts = require('./utils/show/counts');
 require('dotenv').config();
 
 // get config
@@ -22,8 +23,6 @@ console.log('-- -- -- --- ----- --- -- -- --');
 console.log('--- -- --- ----- --- --- ---- -');
 console.log(`--- -- MY TASK IS ${task}`);
 console.log('--- -- --- ----- --- --- ---- -');
-
-console.log(process.argv);
 
 // connection with DB
 mongoose
@@ -46,7 +45,7 @@ mongoose
     width: WINDOW_WIDTH,
     height: WINDOW_HEIGHT
   };
-  let driver = {};
+  let driver;
 
   switch (task) {
     case 'getUsername':
@@ -88,9 +87,14 @@ mongoose
         await sendMail({ title, content });
         break;
 
+      case 'showCounts':
+        await showCounts();
+        break;
+
       default:
-        await driver.get(url);
-        await getUsernames({ driver, count: 0 });
+        console.log('-----------------------');
+        console.log('Please Enter Valid Task');
+        console.log('-----------------------');
         break;
     }
   } catch (error) {
@@ -100,7 +104,7 @@ mongoose
     console.log(error);
 
     sendMail({ error });
-    await driver.quit();
+    if (driver) await driver.quit();
     console.log('I comme back :)');
     spider();
   }

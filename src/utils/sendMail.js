@@ -8,7 +8,7 @@ async function sendMail({ title = '', content = '', subject = '', error = '', sh
   console.log('---- ---- Send Mail ---- ----');
   console.log('---- ---- --------- ---- ----');
 
-  const { countUsers, countUsersHaveInfo, countUsersDontHaveInfo } = await showCounts();
+  const { countUsers, countUsersHaveInfo, countUsersDontHaveInfo, countEmails } = await showCounts();
 
   const transporter = nodemailer.createTransport({
     service: 'gmail',
@@ -38,7 +38,7 @@ async function sendMail({ title = '', content = '', subject = '', error = '', sh
     to: process.env.TO_MAIL,
     subject: subject || 'Spider Notification',
     template: 'email',
-    context: { countUsers, countUsersHaveInfo, countUsersDontHaveInfo, error, content, title, showCounter }
+    context: { countUsers, countUsersHaveInfo, countUsersDontHaveInfo, error, content, title, showCounter, countEmails }
   };
 
   transporter.sendMail(mailOPtions, function (err, success) {

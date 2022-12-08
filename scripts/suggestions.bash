@@ -1,9 +1,9 @@
 function suggestions() {
     echo
-    echo -e "$BOLD"Suggestions:"$NONE"
+    echo -e "$BOLD"Tasks That I Can Do:"$NONE"
     for VARIABLE in $tasks
     do
-        echo -e "            $YELLOW$VARIABLE$NONE            "
+        echo -e "                     $YELLOW$VARIABLE$NONE            "
     done
     echo
 }

@@ -5,10 +5,11 @@ config = () => {
   const category = CATEGORIES[Number(numberCategory)];
 
   return {
-    url: BASEURL + category,
-    dbUrl: process.env.DB_URL,
     headless: process.env.HEADLESS === 'true',
-    task: process.env.TASK
+    dbUrl: process.env.DB_URL,
+    url: BASEURL + category,
+    task: process.env.TASK,
+    category
   };
 };
 

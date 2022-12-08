@@ -11,7 +11,7 @@ const Spider = require('./models');
 require('dotenv').config();
 
 // get config
-const { dbUrl, url, headless ,task } = config();
+const { dbUrl, url, headless, task } = config();
 
 console.log('-- -- -- --- ----- --- -- -- --');
 console.log('-- -- -- --- ----- --- -- -- --');
@@ -21,8 +21,8 @@ console.log('-- -- -- --- ----- --- -- -- --');
 
 console.log('--- -- --- ----- --- --- ---- -');
 console.log(`--- -- MY TASK IS ${task}`);
+console.log(`--- -- Category: ${process.env.yn}`);
 console.log('--- -- --- ----- --- --- ---- -');
-
 
 // connection with DB
 mongoose

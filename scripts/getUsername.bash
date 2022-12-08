@@ -1,6 +1,6 @@
 function getUsername() {
     echo
-    echo -e "My Task is $BOLD"getUsername"$NONE"
+    echo -e "My Task is $BOLD"Get Username"$NONE"
     echo
     echo -e "$BOLD"Categories:"$NONE"
     

@@ -21,8 +21,9 @@ console.log('-- -- -- --- ----- --- -- -- --');
 
 console.log('--- -- --- ----- --- --- ---- -');
 console.log(`--- -- MY TASK IS ${task}`);
-console.log(`--- -- Category: ${process.env.yn}`);
 console.log('--- -- --- ----- --- --- ---- -');
+
+console.log(process.argv);
 
 // connection with DB
 mongoose

@@ -4,13 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": " bash ./scripts/index.bash",
-    "get-username": "TASK=getUsername  node src/index.js",
-    "get-info": "TASK=getInfo node src/index.js",
-    "show-users": "TASK=showUsers node src/index.js",
-    "clear-users": "TASK=clearUsers node src/index.js",
-    "send-mail": "TASK=sendMail node src/index.js" , 
-    "test": "echo 'Welcome To Spider PLease Enter My Task:' $task"
+    "start": " bash ./scripts/index.bash"
   },
   "author": "",
   "license": "ISC",

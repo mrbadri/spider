@@ -4,6 +4,7 @@ source ./scripts/getUsername.bash
 source ./scripts/suggestions.bash
 source ./scripts/clearUsers.bash
 source ./scripts/sendMail.bash
+source ./scripts/getInfo.bash
 
 
 echo
@@ -16,16 +17,16 @@ while true; do
     case $task in
         get-username ) getUsername exit;;
         
-        get-info) TASK=getInfo node src/index.js exit;;
+        get-info) getInfo exit;;
         
         send-mail) sendMail exit;;
         
         show-users ) TASK=showUsers node src/index.js exit;;
-
+        
         show-counts ) TASK=showCounts node src/index.js exit;;
         
         clear-users ) clearUsers exit;;
-
+        
         
         
         # if dont enter correct answer

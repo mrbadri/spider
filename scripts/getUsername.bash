@@ -15,5 +15,15 @@ function getUsername() {
     echo
     
     read -p "$(echo -e Please Enter $CYAN"Number Category"$NONE?) " numberCategory
-    TASK=getUsername  node src/index.js $numberCategory
+
+    echo
+    
+    while true; do
+        read -p "$(echo -e DO you want Run $Bold$CYAN"Headless"$NONE)(Y/N)? " yn
+        case $yn in
+            [Yy]* ) TASK=getUsername HEADLESS=true node src/index.js $numberCategory exit;;
+            [Nn]* ) TASK=getUsername HEADLESS=false node src/index.js $numberCategory exit;;
+            * ) echo "Please answer yes or no.";;
+        esac
+    done   
 }

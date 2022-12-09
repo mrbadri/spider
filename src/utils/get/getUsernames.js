@@ -4,7 +4,7 @@ const getTotalUsers = require('../getTotalUsers');
 
 async function getUsernames({ driver, count = 0 }) {
   console.log('--- --- --- Get Usernames --- --- ---');
-  await checkNewUsers(driver, count);
+  await checkNewUsers(driver, count , getUsernames);
 
   const currentUrl = await driver.getCurrentUrl();
   const category = currentUrl.split('/')[4];

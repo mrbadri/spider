@@ -3,6 +3,7 @@ const Spider = require('../../models');
 async function saveUsername({ username, category, source }) {
   console.log(`--- --- --- --- --- --- --- --- - --- ---`);
   console.log(`--- --- Loading for Save username --- ---`);
+  console.log(`--- --- category: ${category}  `);
   console.log(`--- --- --- --- --- --- --- --- - --- ---`);
 
   const user = await Spider.findOne({ username });
@@ -39,7 +40,7 @@ async function saveUsername({ username, category, source }) {
         { username },
         { categories: [...categories] },
         {
-          new: true,
+          new: true
         }
       );
 

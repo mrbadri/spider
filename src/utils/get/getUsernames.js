@@ -1,10 +1,15 @@
 const saveUsername = require('../save/saveUsername');
 const checkNewUsers = require('../checkNewUsers');
 const getTotalUsers = require('../getTotalUsers');
+const nextUrl = require('../nextUrl');
 
 async function getUsernames({ driver, count = 0 }) {
   console.log('--- --- --- Get Usernames --- --- ---');
-  await checkNewUsers(driver, count , getUsernames);
+
+  const test = await nextUrl(driver);
+  console.log('NEXT URL ------------:', test);
+
+  await checkNewUsers(driver, count, getUsernames);
 
   const currentUrl = await driver.getCurrentUrl();
   const category = currentUrl.split('/')[4];

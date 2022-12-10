@@ -9,6 +9,7 @@ source ./scripts/getInfo.bash
 
 echo
 echo -e "Hi, I'm $PURPLE$BOLD"Spider"$NONE"
+
 suggestions
 
 while true; do
@@ -26,8 +27,6 @@ while true; do
         show-counts ) TASK=showCounts node src/index.js exit;;
         
         clear-users ) clearUsers exit;;
-        
-        
         
         # if dont enter correct answer
         * ) suggestions ;;

@@ -17,7 +17,7 @@ async function checkNewUsers(driver, countLastUserSaved, getUsernames, count = 0
 
   if (count > TRY_PER_URL) {
     await sendMail({ error: "We Don't Have New Post!" });
-    await driver.get(nextUrl());
+    await driver.get(await nextUrl(driver));
     await getUsernames({ driver, count: 0 });
   }
 

@@ -2,17 +2,14 @@ const { WINDOW_WIDTH, WINDOW_HEIGHT } = require('./constant');
 const { Builder, Browser } = require('selenium-webdriver');
 const getUsernames = require('./utils/get/getUsernames');
 const chrome = require('selenium-webdriver/chrome');
+const showCounts = require('./utils/show/counts');
 const showUsers = require('./utils/show/users');
 const getInfo = require('./utils/get/getInfo');
 const sendMail = require('./utils/sendMail');
 const mongoose = require('mongoose');
 const config = require('./config');
 const Spider = require('./models');
-const showCounts = require('./utils/show/counts');
 require('dotenv').config();
-
-// get config
-const { dbUrl, url, headless, task } = config();
 
 console.log('-- -- -- --- ----- --- -- -- --');
 console.log('-- -- -- --- ----- --- -- -- --');
@@ -20,9 +17,8 @@ console.log('-- -- -- --- START --- -- -- --');
 console.log('-- -- -- --- ----- --- -- -- --');
 console.log('-- -- -- --- ----- --- -- -- --');
 
-console.log('--- -- --- ----- --- --- ---- -');
-console.log(`--- -- MY TASK IS ${task}`);
-console.log('--- -- --- ----- --- --- ---- -');
+// get config
+const { dbUrl, url, headless, task } = config();
 
 // connection with DB
 mongoose
@@ -46,14 +42,21 @@ mongoose
     height: WINDOW_HEIGHT
   };
   let driver;
+  const PROXY = '75.126.253.8:8080';
 
   switch (task) {
     case 'getUsername':
     case 'getInfo':
       if (headless) {
-        driver = await new Builder().forBrowser(Browser.CHROME).setChromeOptions(new chrome.Options().headless()).build();
+        driver = await new Builder()
+          .forBrowser(Browser.CHROME)
+          .setChromeOptions(new chrome.Options().headless().addArguments(`--proxy-server=http://${PROXY}`))
+          .build();
       } else {
-        driver = await new Builder().forBrowser(Browser.CHROME).setChromeOptions(new chrome.Options().windowSize(screen)).build();
+        driver = await new Builder()
+          .forBrowser(Browser.CHROME)
+          .setChromeOptions(new chrome.Options().windowSize(screen).addArguments(`--proxy-server=http://${PROXY}`))
+          .build();
       }
       break;
   }
@@ -68,6 +71,7 @@ mongoose
       case 'getUsername':
         await driver.get(url);
         await getUsernames({ driver, count: 0 });
+
         break;
 
       case 'showUsers':

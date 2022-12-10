@@ -300,3 +300,5 @@ const PROXY_LIST = [
   '176.10.97.97:8118',
   '47.253.105.175:5566'
 ];
+
+module.exports = PROXY_LIST;

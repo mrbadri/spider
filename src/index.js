@@ -1,4 +1,4 @@
-const { WINDOW_WIDTH, WINDOW_HEIGHT } = require('./constant');
+const { WINDOW_WIDTH, WINDOW_HEIGHT, PROXY_LIST } = require('./constant');
 const { Builder, Browser } = require('selenium-webdriver');
 const getUsernames = require('./utils/get/getUsernames');
 const chrome = require('selenium-webdriver/chrome');
@@ -33,7 +33,7 @@ mongoose
 /**
  * @function spider
  */
-(async function spider() {
+(async function spider(proxyCount = 0) {
   console.log('Spider is LOADING ...');
 
   // Handle Create Driver
@@ -41,8 +41,13 @@ mongoose
     width: WINDOW_WIDTH,
     height: WINDOW_HEIGHT
   };
+
+  const PROXY = PROXY_LIST[proxyCount % PROXY_LIST.length];
+  console.log('---- ------');
+  console.log('---- PROXY:', PROXY);
+  console.log('---- ------');
+
   let driver;
-  const PROXY = '75.126.253.8:8080';
 
   switch (task) {
     case 'getUsername':
@@ -110,6 +115,6 @@ mongoose
     sendMail({ error });
     if (driver) await driver.quit();
     console.log('I comme back :)');
-    spider();
+    spider(proxyCount + 1);
   }
 })();

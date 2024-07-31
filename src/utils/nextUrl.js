@@ -1,17 +1,18 @@
-const { CATEGORIES, BASEURL } = require('../constant');
+const { By } = require('selenium-webdriver');
+const saveUrlUser = require('./save/saveUrlUser');
+const getUrl = require('./getUrl');
 
 async function nextUrl(driver) {
-  const currentUrl = await driver.getCurrentUrl();
-  const category = currentUrl.split('/')[4];
-  const numberCategory = CATEGORIES.indexOf(category);
+  const $links = await driver.findElements(By.css('.search-results-suggestion a'));
 
-  const newCategory = CATEGORIES[(numberCategory + 1) % CATEGORIES.length];
-  const url = BASEURL + newCategory;
-  console.log('----- -------- ----- ----- ----- ');
-  console.log('----- NEXT URL -----', url);
-  console.log('----- -------- ----- ----- ----- ');
+  for (let i = 0; i < $links.length; i++) {
+    const url = await $links[i].getAttribute('href');
 
-  return url;
+    // Save the URL independently
+    await saveUrlUser({ url });
+  }
+
+  return getUrl();
 }
 
 module.exports = nextUrl;

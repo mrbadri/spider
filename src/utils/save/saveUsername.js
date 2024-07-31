@@ -1,4 +1,4 @@
-const Spider = require('../../models');
+const Spider = require('../../models/userProfile');
 
 async function saveUsername({ username, category, source }) {
   console.log(`--- --- --- --- --- --- --- --- - --- ---`);

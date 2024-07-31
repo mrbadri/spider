@@ -5,26 +5,26 @@ const spiderSchema = new Schema(
   {
     username: {
       type: String,
-      required: true,
+      required: true
     },
     categories: {
       type: [String],
-      default: [],
+      default: []
     },
     haveInfo: {
       type: Boolean,
-      default: false,
+      default: false
     },
     source: String,
     email: String,
     bio: String,
     instagram: String,
     website: String,
-    profile: String,
+    profile: String
   },
   { timestamps: true }
 );
 
-const Spider = mongoose.model('spider', spiderSchema);
+const UserProfile = mongoose.model('userProfile', spiderSchema);
 
-module.exports = Spider;
+module.exports = UserProfile;

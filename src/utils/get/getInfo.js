@@ -1,5 +1,5 @@
 const { By, until } = require('selenium-webdriver');
-const Spider = require('../../models');
+const Spider = require('../../models/userProfile');
 const extractEmails = require('../extractEmail');
 const saveInfo = require('../save/saveInfo');
 const showCounts = require('../show/counts');
@@ -12,7 +12,6 @@ async function getInfo(driver) {
 
   const users = await Spider.find({ haveInfo: false }).limit(20);
   let user = users[0];
-
 
   // when you open multi terminal with ( yarn run get-info ) this condition help you don't get same user info
   if (users.length > 10) {
@@ -41,7 +40,7 @@ async function getInfo(driver) {
       bio,
       email,
       website: `https://dribbble.com/${username}/click?type=site`,
-      instagram: `https://dribbble.com/${username}/click?type=instagram`,
+      instagram: `https://dribbble.com/${username}/click?type=instagram`
     };
 
     await saveInfo(info);

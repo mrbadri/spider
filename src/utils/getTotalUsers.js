@@ -10,10 +10,13 @@ async function getTotalUsers(driver) {
       break;
 
     default:
-      address = '.good-details a.good-title-text.font-body-small';
+      if (currentUrl.includes('https://dribbble.com/search')) address = '.user-information a.hoverable';
+      else address = '.good-details a.good-title-text.font-body-small';
       break;
   }
   const users = await driver.findElements(By.css(address));
+
+  console.log('##########====>>> Find User:', users.length);
   return users;
 }
 

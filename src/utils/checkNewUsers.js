@@ -1,4 +1,4 @@
-const Spider = require('../models');
+const Spider = require('../models/userProfile');
 
 const { TRY_PER_URL, TIME_PER_TRY } = require('../constant');
 const getUsernames = require('./get/getUsernames');

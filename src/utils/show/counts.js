@@ -1,4 +1,4 @@
-const Spider = require('../../models');
+const Spider = require('../../models/userProfile');
 
 const showCounts = async () => {
   const users = await Spider.find();

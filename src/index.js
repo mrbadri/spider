@@ -1,34 +1,48 @@
-const { WINDOW_WIDTH, WINDOW_HEIGHT, PROXY_LIST } = require('./constant');
+const { WINDOW_WIDTH, WINDOW_HEIGHT } = require('./constant');
 const { Builder, Browser } = require('selenium-webdriver');
-const getUsernames = require('./utils/get/getUsernames');
 const chrome = require('selenium-webdriver/chrome');
+const mongoose = require('mongoose');
+const fs = require('fs');
+const path = require('path');
+const config = require('./config');
+const Spider = require('./models/userProfile');
+const getUsernames = require('./utils/get/getUsernames');
 const showCounts = require('./utils/show/counts');
 const showUsers = require('./utils/show/users');
 const getInfo = require('./utils/get/getInfo');
 const sendMail = require('./utils/sendMail');
-const mongoose = require('mongoose');
-const config = require('./config');
-const Spider = require('./models');
+const getUrl = require('./utils/getUrl');
 require('dotenv').config();
 
 console.log('-- -- -- --- ----- --- -- -- --');
-console.log('-- -- -- --- ----- --- -- -- --');
 console.log('-- -- -- --- START --- -- -- --');
-console.log('-- -- -- --- ----- --- -- -- --');
-console.log('-- -- -- --- ----- --- -- -- --');
 
-// get config
-const { dbUrl, url, headless, task } = config();
+// Load config
+const { dbUrl, headless, task } = config();
 
-// connection with DB
+// Connect to MongoDB
 mongoose
   .connect(dbUrl, { useNewUrlParser: true, useUnifiedTopology: true })
-  .then(() => {
-    console.log('connected to db!');
-  })
-  .catch((err) => {
-    console.log(err);
-  });
+  .then(() => console.log('Connected to DB!'))
+  .catch((err) => console.error('DB connection error:', err));
+
+/**
+ * Read proxies from a file
+ * @param {string} filePath - Path to the proxy list file
+ * @returns {string[]} - Array of proxies
+ */
+function readProxiesFromFile(filePath) {
+  try {
+    const data = fs.readFileSync(filePath, 'utf8');
+    return data
+      .split('\n')
+      .map((proxy) => proxy.trim())
+      .filter((proxy) => proxy);
+  } catch (error) {
+    console.error('Error reading proxy list:', error);
+    return [];
+  }
+}
 
 /**
  * @function spider
@@ -36,85 +50,72 @@ mongoose
 (async function spider(proxyCount = 0) {
   console.log('Spider is LOADING ...');
 
-  // Handle Create Driver
-  const screen = {
-    width: WINDOW_WIDTH,
-    height: WINDOW_HEIGHT
-  };
+  const url = getUrl();
 
-  const PROXY = PROXY_LIST[proxyCount % PROXY_LIST.length];
-  console.log('---- ------');
-  console.log('---- PROXY:', PROXY);
-  console.log('---- ------');
+  const screen = { width: WINDOW_WIDTH, height: WINDOW_HEIGHT };
+  const proxyList = readProxiesFromFile(path.join(__dirname, 'proxylist.txt'));
 
-  let driver;
-
-  switch (task) {
-    case 'getUsername':
-    case 'getInfo':
-      if (headless) {
-        driver = await new Builder()
-          .forBrowser(Browser.CHROME)
-          .setChromeOptions(new chrome.Options().headless().addArguments(`--proxy-server=http://${PROXY}`))
-          .build();
-      } else {
-        driver = await new Builder()
-          .forBrowser(Browser.CHROME)
-          .setChromeOptions(new chrome.Options().windowSize(screen).addArguments(`--proxy-server=http://${PROXY}`))
-          .build();
-      }
-      break;
+  if (proxyList.length === 0) {
+    console.log('No proxies available, aborting...');
+    return;
   }
 
-  // Run Tasks
+  const PROXY = proxyList[proxyCount % proxyList.length];
+  console.log(`Using PROXY: ${PROXY}`);
+
+  let driver;
+  const options = new chrome.Options();
+  // TODO: Proxy not work
+  // options.addArguments(`--proxy-server=http://${PROXY}`);
+
+  if (headless) {
+    options.headless();
+  } else {
+    options.windowSize(screen);
+  }
+
+  try {
+    driver = await new Builder().forBrowser(Browser.CHROME).setChromeOptions(options).build();
+  } catch (error) {
+    console.error('Error creating WebDriver:', error);
+    return;
+  }
+
   try {
     switch (task) {
       case 'getInfo':
         await getInfo(driver);
         break;
-
       case 'getUsername':
+        console.log('Navigating to URL:', url);
         await driver.get(url);
+        // await nextUrl(driver);
         await getUsernames({ driver, count: 0 });
-
         break;
-
       case 'showUsers':
         await showUsers();
         break;
-
       case 'clearUsers':
         await Spider.deleteMany({});
-        console.log('----- -- -- - -----');
-        console.log('----- Cleared -----');
-        console.log('----- -- -- - -----');
+        console.log('Cleared user profiles.');
         break;
-
       case 'sendMail':
-        const [arg1, arg2, title = '', content = ''] = process.argv;
-
+        const [, , title = '', content = ''] = process.argv;
         await sendMail({ title, content });
         break;
-
       case 'showCounts':
         await showCounts();
         break;
-
       default:
-        console.log('-----------------------');
-        console.log('Please Enter Valid Task');
-        console.log('-----------------------');
+        console.log('Invalid task specified.');
         break;
     }
   } catch (error) {
-    console.log('----- -- -- -----');
-    console.log('----- ERROR -----');
-    console.log('----- -- -- -----');
-    console.log(error);
-
-    sendMail({ error });
+    console.error('Task error:', error);
+    await sendMail({ error });
     if (driver) await driver.quit();
-    console.log('I comme back :)');
     spider(proxyCount + 1);
   }
+
+  // if (driver) await driver.quit();
 })();

@@ -23,7 +23,10 @@ const { dbUrl, headless, task } = config();
 // Connect to MongoDB
 mongoose
   .connect(dbUrl, { useNewUrlParser: true, useUnifiedTopology: true })
-  .then(() => console.log('Connected to DB!'))
+  .then(() => {
+    console.log('Connected to DB!');
+    spider();
+  })
   .catch((err) => console.error('DB connection error:', err));
 
 /**
@@ -47,7 +50,7 @@ function readProxiesFromFile(filePath) {
 /**
  * @function spider
  */
-(async function spider(proxyCount = 0) {
+async function spider(proxyCount = 0) {
   console.log('Spider is LOADING ...');
 
   const url = getUrl();
@@ -118,4 +121,4 @@ function readProxiesFromFile(filePath) {
   }
 
   // if (driver) await driver.quit();
-})();
+}

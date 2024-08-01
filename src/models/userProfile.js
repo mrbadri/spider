@@ -20,11 +20,22 @@ const spiderSchema = new Schema(
     bio: String,
     instagram: String,
     website: String,
-    profile: String
+    location: String,
+    medium: String,
+    linkedin: String,
+    twitter: String,
+    skills: {
+      type: [String],
+      default: []
+    },
+    members: {
+      type: [String],
+      default: []
+    }
   },
   { timestamps: true }
 );
 
-const UserProfile = mongoose.model('userProfile', spiderSchema);
+const UserProfile = mongoose.model('UserProfile', spiderSchema);
 
 module.exports = UserProfile;

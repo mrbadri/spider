@@ -6,9 +6,56 @@ const showCounts = require('../show/counts');
 const switchNextTab = require('../switchNextTab');
 const timeout = require('../timeout');
 const getAboutLink = require('./getAboutLink');
+const saveUrlUser = require('../save/saveUrlUser');
+const saveUsername = require('../save/saveUsername');
+const updateHaveInfo = require('../update/updateHaveInfo');
+
+const getSocialLink = async (driver, target) => {
+  try {
+    const element = await driver.findElement(By.css(`a[data-social='${target}']`));
+    if (element) {
+      return await element.getAttribute('href');
+    }
+  } catch (error) {
+    console.error(`Error finding social link for ${target}:`, error.message);
+  }
+  return null;
+};
+
+const getMemberList = async (driver) => {
+  const $members = (await driver.findElements(By.css('.team-members-list .team-members-list-item a'))) || null;
+
+  const members = [];
+  for (let i = 0; i < $members.length; i++) {
+    const username = await $members[i].getAttribute('href');
+
+    members.push(username?.split('/')?.[3]);
+
+    await saveUsername({ username });
+  }
+
+  return members;
+};
+const getSkillList = async (driver) => {
+  const $skills = (await driver.findElements(By.css('.skills-list a'))) || null;
+  const skills = [];
+
+  for (let i = 0; i < $skills.length; i++) {
+    const skill = await $skills[i].getAttribute('data-skill');
+    const url = await $skills[i].getAttribute('href');
+
+    skills.push(skill);
+
+    await saveUrlUser({ url });
+  }
+
+  return skills;
+};
 
 async function getInfo(driver) {
   console.log('Get Info is LOADING ...');
+
+  // updateHaveInfo(false);
 
   const users = await Spider.find({ haveInfo: false }).limit(20);
   let user = users[0];
@@ -31,19 +78,35 @@ async function getInfo(driver) {
 
     await driver.get(link);
 
-    const $bio = await driver.findElements(By.css('.bio-text'));
-    const bio = $bio.length !== 0 ? await $bio[0]?.getText() : null;
-    const email = extractEmails(bio) ? extractEmails(bio)[0] : null;
+    const bio = (await driver.findElement(By.css('.profile-section-bio'))?.getText()) || null;
+    const email = extractEmails(bio)?.[0] || null;
+    const location = (await driver.findElement(By.css('.location'))?.getText()) || null;
+    const medium = await getSocialLink(driver, 'Medium');
+    const linkedin = await getSocialLink(driver, 'LinkedIn');
+    const instagram = await getSocialLink(driver, 'Instagram');
+    const twitter = await getSocialLink(driver, 'Twitter');
+    const site = await getSocialLink(driver, 'user-website');
+    const skills = await getSkillList(driver);
+    const members = await getMemberList(driver);
 
     const info = {
       username,
       bio,
       email,
-      website: `https://dribbble.com/${username}/click?type=site`,
-      instagram: `https://dribbble.com/${username}/click?type=instagram`
+      location,
+      medium,
+      linkedin,
+      instagram,
+      twitter,
+      site,
+      skills,
+      members
     };
 
+    console.log('===>>> INFO:', info);
+
     await saveInfo(info);
+
     console.log('--- --- --- --- --- --- --- --- ---');
     console.log('Username:', username);
     console.log('--- --- ---');

@@ -10,7 +10,7 @@ config = () => {
     headless: process.env.HEADLESS === 'true',
     dbUrl: process.env.DB_URL,
     url: 'https://dribbble.com/search/landing-page',
-    task: 'getUsername',
+    task: 'getInfo',
     numberCategory,
     category
   };

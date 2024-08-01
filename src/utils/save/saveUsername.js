@@ -1,6 +1,6 @@
 const Spider = require('../../models/userProfile');
 
-async function saveUsername({ username, category, source }) {
+async function saveUsername({ username, category, source = 'https://dribbble.com/' }) {
   console.log(`--- --- --- --- --- --- --- --- - --- ---`);
   console.log(`--- --- Loading for Save username --- ---`);
   console.log(`--- --- category: ${category}  `);

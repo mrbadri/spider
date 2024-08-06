@@ -9,7 +9,7 @@ function convertUrlBaseNewSort(originalUrl) {
     const path = url.pathname.split('/');
 
     // Check if the path matches the expected pattern
-    if (path.length === 3 && path[1] === 'search') {
+    if (path.length === 3) {
       // Extract the query term
       const queryTerm = path[2];
 
